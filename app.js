@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import postsRouter from "./routes/postsRoute.js";
-dotenv.config({ path: ".env.dev" });
+dotenv.config();
 
 
 const app = express();
@@ -17,3 +18,20 @@ app.listen(PORT, (error) =>{
         console.log("Error occurred, server can't start", error);
     }
 );
+
+const initApp = async () => {
+    try{
+        const dbUrl = process.env.DATABASE_URL;
+        if (!dbUrl) {
+            throw new Error("DATABASE_URL is not defined");
+        }
+        await mongoose.connect(dbUrl, {});
+        const db = mongoose.connection;
+        db.on("error", (error) => {throw new Error(error)});
+        db.once("open", () => console.log("Connected to Database"));
+    }catch(error){
+        console.error(`Error init application: ${error.message}`);
+    }
+}
+
+initApp();

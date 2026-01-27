@@ -1,4 +1,4 @@
-
+import { postModel } from "../model/postModel.js";
 
 export async function createPost(req, res) {
   try {
@@ -7,7 +7,8 @@ export async function createPost(req, res) {
         res.status(400).send(`Bad Request - userId, title, content are required`);
         return;
     }
-    res.json(req.body);
+    const post = await postModel.create({ userId, title, content });
+    res.json(post);
   } catch (err) {
     res.status(500).send(err);
   }
@@ -16,10 +17,16 @@ export async function createPost(req, res) {
 export async function getAllPosts(req, res) {
   try {
     if(req.query){
-      res.json(req.query);
+      const posts = await postModel.find(req.query).sort({ createdAt: -1 });
+      res.json(posts);
       return;
     }else{
-      res.json("returned all Posts");
+      const allPosts = await postModel.find({});
+      if(!allPosts){
+          res.status(400).send(`There are no posts in the database`);
+          return;
+      }
+      res.json(allPosts);
     }
   } catch (err) {
     res.status(500).send(err);
@@ -33,8 +40,11 @@ export async function getPostById(req, res) {
         res.status(404).json(`Bad Request - postId is required`);
         return;
     }
-
-    res.json(req.params.postId);
+    const post = await postModel.findById(postId);
+    if (!post) {
+      res.status(404).send(`Post not found`);
+    }
+    res.json(post);
   } catch (err) {
     res.status(500).send(err);
   }
@@ -46,10 +56,14 @@ export async function replacePost(req, res) {
     const { userId, title, content } = req.body;
     const postId = req.params.postId;
     if (!postId ||!userId || !title || !content) {
-      res.status(400).send(`userId, title, content are required (full replace)`);
+      res.status(400).send(`postId userId, title, content are required (full replace)`);
       return;
     }
-    res.json(req.body);
+    const post = await postModel.findByIdAndUpdate(postId, { userId, title, content }, { new: true });
+    if (!post) {
+      res.status(404).send(`Post not found`);
+    }
+    res.json(post);
   } catch (err) {
     res.status(500).send(err);
   }

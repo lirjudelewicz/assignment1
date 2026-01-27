@@ -1,0 +1,38 @@
+################################################################################
+# POSTS
+################################################################################
+
+
+###
+#Create Post
+POST http://localhost:3000/post
+Content-Type: application/json
+
+{
+  "senderId": "id1",
+  "title": "Post 1",
+  "content": "Hello from sender1"
+}
+
+###
+# Get All Posts  
+GET http://localhost:3000/post
+
+###
+# Get Posts by Sender
+GET http://localhost:3000/post?sender_id=id1
+
+###
+# Get Post by ID  
+GET http://localhost:3000/post/p1
+
+###
+# Post 
+PUT http://localhost:3000/post/p1
+Content-Type: application/json
+
+{
+  "senderId": "{{sender1}}",
+  "title": "Post 1 (Updated)",
+  "content": "Updated content"
+}
