@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import postsRouter from "./routes/postsRoute.js";
+import commentsRouter from "./routes/commentsRoute.js";
 dotenv.config();
 
 
@@ -10,6 +11,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use("/post", postsRouter);
+app.use("/comment", commentsRouter);
+
 
 app.listen(PORT, (error) =>{
     if(!error)
