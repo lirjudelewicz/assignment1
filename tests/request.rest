@@ -27,7 +27,7 @@ GET http://localhost:3000/post?sender_id=id1
 GET http://localhost:3000/post/p1
 
 ###
-# Post 
+# Update Post 
 PUT http://localhost:3000/post/p1
 Content-Type: application/json
 
