@@ -59,7 +59,11 @@ export async function replacePost(req, res) {
       res.status(400).send(`postId userId, title, content are required (full replace)`);
       return;
     }
-    res.json(req.body);
+    const post = await postModel.findByIdAndUpdate(postId, { userId, title, content }, { new: true });
+    if (!post) {
+      res.status(404).send(`Post not found`);
+    }
+    res.json(post);
   } catch (err) {
     res.status(500).send(err);
   }

@@ -1,3 +1,5 @@
+import { commentModel } from "../model/commentModel.js";
+
 
 export async function createComment(req, res){
     try{
@@ -7,7 +9,11 @@ export async function createComment(req, res){
             res.status(400).send(`postId, senderId, message are required`);
             return;
         }
-        res.json(req.body);
+        const newComment = await commentModel.create({
+            postId, senderId, message
+        });
+        console.log(`Succesfully added a new comment id: [${newComment._id}] to post id: [${postId}]`);
+        res.json(newComment);
     }catch(err){
         res.status(500).send(`Error creating comment ended with error: ${err.message}`);
     }
@@ -22,7 +28,9 @@ export async function readCommentById(req, res){
             res.status(400).send(`Bad Request - commentId required`);
             return;
         }
-        res.json(req.body);
+        const comment = await commentModel.findById(commentId);
+        console.log(`Succesfully got comment id: [${commentId}]`);
+        res.json(comment);
     }catch(err){
         res.status(500).send(`Error reading comment ended with error: ${err.message}`);
     }
@@ -38,7 +46,9 @@ export async function updateComment(req, res, next){
             res.status(400).send(`Rejecting - commentId, postId, senderId, message are required`);
             return;
         }
-        res.json(updatedData);
+        const comment = await commentModel.findByIdAndUpdate(commentId, updatedData, {new: true});
+        console.log(`Succesfully updated comment id: [${commentId}]`);
+        res.json(comment);
     }catch(err){
         res.status(500).send(`Error reading comment ended with error: ${err.message}`);
     }
@@ -52,7 +62,9 @@ export async function deleteComment(req, res, next){
             res.status(400).send(`Rejecting - commentId required`);
             return;
         }
-        res.json(commentId);
+        const deletedComment = await commentModel.findByIdAndDelete(commentId);
+        console.log(`Succesfully deleted comment id: [${commentId}]`);
+        res.json(deletedComment);
     }catch(err){
         res.status(500).send(`Error deleting comment ended with error: ${err.message}`);
     }
