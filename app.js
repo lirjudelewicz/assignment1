@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import postsRouter from "./routes/postsRoute.js";
 import commentsRouter from "./routes/commentsRoute.js";
-dotenv.config();
+dotenv.config({path: "./.env"});
 
 
 const app = express();
