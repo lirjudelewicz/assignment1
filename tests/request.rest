@@ -1,0 +1,78 @@
+################################################################################
+# POSTS
+################################################################################
+
+
+###
+#Create Post
+POST http://localhost:3000/post
+Content-Type: application/json
+
+{
+  "senderId": "id1",
+  "title": "Post 1",
+  "content": "Hello from sender1"
+}
+
+###
+# Get All Posts  
+GET http://localhost:3000/post
+
+###
+# Get Posts by Sender
+GET http://localhost:3000/post?sender_id=id1
+
+###
+# Get Post by ID  
+GET http://localhost:3000/post/p1
+
+###
+# Post 
+PUT http://localhost:3000/post/p1
+Content-Type: application/json
+
+{
+  "senderId": "id1",
+  "title": "Post 1 (Updated)",
+  "content": "Updated content"
+}
+
+
+################################################################################
+# COMMENTS
+################################################################################
+
+
+###
+#Create Comment
+
+POST http://localhost:3000/comment
+Content-Type: application/json
+
+{
+  "postID": "jcspi07494u4",
+  "senderID": "sdklnklsn834hej8",
+  "message": "The best"
+}
+###
+#Get comment by ID
+
+GET http://localhost:3000/comment/69133c28251f35bcbc4206a6
+
+###
+# Update comment - full replace
+PUT http://localhost:3000/comment/69133cc67e0a6f1ddc7f1ec7
+
+Content-Type: application/json
+{
+  "postID": "jcspi07494u4",
+  "senderID": "sdklnklsn834hej8",
+  "message": "Good"
+}
+
+###
+# Delete comment by ID
+
+DELETE http://localhost:3000/comment/69133c28251f35bcbc4206a6
+
+
